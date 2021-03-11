@@ -2,19 +2,16 @@
 import { AxiosResponse } from 'axios'
 import { STATUS_CODE } from "@/api";
 import { removeToken } from '@/utils/auth'
-import router from '@/router';
 import { Toast } from 'vant'
-
-function errorCreat(msg: string) {
-    const err = new Error(msg)
-    errorLog(err)
-}
 
 export const errorLog = (err: Error) => {
     Toast.fail(err.message)
     throw new Error(err.message)
 }
-
+function errorCreat(msg: string) {
+    const err = new Error(msg)
+    errorLog(err)
+}
 export const handleError = (response: AxiosResponse) => {
     const res = response.data
     const { code } = res //获取后端返回的 code

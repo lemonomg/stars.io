@@ -29,6 +29,7 @@
 import { Vue, Component } from "vue-property-decorator";
 import { Button, Field, Form } from "vant";
 import NavBar from "./NavBar.vue";
+import store from "@/store";
 Vue.use(Button);
 Vue.use(Form);
 Vue.use(Field);
@@ -45,8 +46,13 @@ export default class Login extends Vue {
     account: "",
     password: "",
   };
+  public created() {
+    console.log(process.env.VUE_APP_DECRY);
+  }
   private handleLogin() {
-    console.log(this.loginForm);
+    store.dispatch("user/login", this.loginForm).then((res) => {
+      console.log(res);
+    });
   }
 }
 </script>

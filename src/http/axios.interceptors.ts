@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import axiosRetry from 'axios-retry'
 import { getToken } from '@/utils/auth'
 import { handleError, errorLog } from './error'
@@ -13,14 +13,15 @@ const Crypto = new CryptHelper()
  */
 
 function handleRequestData(config: AxiosRequestConfig) {
-    if (process.env.VUE_APP_DECRYPT === 'true') {
+    if (process.env.VUE_APP_DECRY === 'true') {
         const method = config.method as string
+        let aesParams = config.params
+        let aesData = config.data
         switch (method.toLocaleUpperCase()) {
             case 'GET':
-                let aesParams = config.params
                 // 是否需要加密参数
-                if (process.env.VUE_APP_ENCRYPT === 'true') {
-                    aesParams = Crypto.encrypt(aesParams)
+                if (process.env.VUE_APP_ENCRY === 'true') {
+                    aesParams = config.params = Crypto.encrypt(config.params)
                 }
                 config.params = {}
                 config.params.p = aesParams
@@ -28,9 +29,8 @@ function handleRequestData(config: AxiosRequestConfig) {
             case 'POST':
             case 'PUT':
             case 'DELETE':
-                let aesData = config.params
-                if (process.env.VUE_APP_ENCRYPT === 'true') {
-                    aesData = Crypto.encrypt(aesData)
+                if (process.env.VUE_APP_ENCRY === 'true') {
+                    aesData = Crypto.encrypt(config.data)
                 }
                 config.data = {}
                 config.data.p = aesData
@@ -46,7 +46,7 @@ function handleRequestData(config: AxiosRequestConfig) {
  * 对响应数据进行处理
  */
 function handleResponseData(response: AxiosResponse) {
-    if (process.env.VUE_APP_DECRYPT === 'true') {
+    if (process.env.VUE_APP_DECRY === 'true') {
         let data = response.data
         data = JSON.parse(Crypto.decrypt(data))
         response.data = data
@@ -110,6 +110,8 @@ service.interceptors.response.use(
         }
     },
     (error) => {
+        console.log(error.response.status);
+
         if (error && error.response) {
             switch (error.response.status) {
                 case 400:

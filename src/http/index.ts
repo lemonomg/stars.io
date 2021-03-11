@@ -2,9 +2,9 @@ import service from './axios.interceptors'
 import { BASE_API } from '@/api'
 
 interface FetchData {
-    url: string,
-    params: object,
-    timestamp: number
+    url: string;
+    params: object;
+    timestamp: number;
 }
 
 class Http {
@@ -75,7 +75,7 @@ class Http {
         switch (method.toLocaleUpperCase()) {
             case 'GET':
                 return this.request(Object.assign(config, {
-                    url: BASE_API,
+                    url: `${BASE_API}${url}`,
                     method: method.toUpperCase(),
                     params: fetchData
                 }))
@@ -83,7 +83,7 @@ class Http {
             case 'PUT':
             case 'DELETE':
                 return this.request(Object.assign(config, {
-                    url: BASE_API,
+                    url: `${BASE_API}${url}`,
                     method: method.toUpperCase(),
                     data: fetchData
                 }))
@@ -92,3 +92,5 @@ class Http {
         }
     }
 }
+
+export default Http

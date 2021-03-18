@@ -18,7 +18,7 @@ export default class CryptHelper {
     public encrypt(word: string): string {
         let encryptWord = ""
         const CryptoKey = CryptoJS.enc.Utf8.parse(this.key);
-        const CryptoIv = CryptoJS.enc.Utf8.parse(this.iv.substr(0, 6))
+        const CryptoIv = CryptoJS.enc.Utf8.parse(this.iv.substr(0, 8))
         // 判断加密字符串是否为 string 
         if (typeof (word) !== "string") {
             word = JSON.stringify(word);
@@ -32,7 +32,7 @@ export default class CryptHelper {
     }
     public decrypt(word: string): string {
         const CryptoKey = CryptoJS.enc.Utf8.parse(this.key);
-        const CryptoIv = CryptoJS.enc.Utf8.parse(this.iv.substr(0, 6))
+        const CryptoIv = CryptoJS.enc.Utf8.parse(this.iv.substr(0, 8))
         const decryptWord = CryptoJS.TripleDES.decrypt(word, CryptoKey, {
             iv: CryptoIv,
             mode: CryptoJS.mode.CBC,

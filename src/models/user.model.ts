@@ -1,4 +1,4 @@
-export interface UserInfo {
+export type UserInfo = {
     _id: number,
     nickname: string,
     avatar: string,

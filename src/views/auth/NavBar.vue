@@ -1,5 +1,10 @@
 <template>
-  <van-nav-bar left-text="返回" @click-left="onClickLeft" />
+  <van-nav-bar
+    class="account-navbar"
+    left-text="返回"
+    :title="$route.meta.title"
+    @click-left="onClickLeft"
+  />
 </template>
 
 <script lang="ts">
@@ -16,11 +21,8 @@ export default class NavBars extends Vue {
 }
 </script>
 
-<style>
-.van-nav-bar {
-  position: fixed;
-  left: 0px;
-  right: 0px;
-  top: 0;
+<style scoped>
+.account-navbar {
+  margin-bottom: 15px !important;
 }
 </style>

@@ -3,8 +3,8 @@ import axiosRetry from 'axios-retry'
 import { getToken } from '@/utils/auth'
 import { handleError, errorLog } from './error'
 import CryptHelper from '@/utils/crypt'
-import { Toast } from 'vant'
 import { STATUS_CODE } from '@/api'
+import { Toast } from 'vant'
 
 const Crypto = new CryptHelper()
 
@@ -49,6 +49,7 @@ function handleResponseData(response: AxiosResponse) {
     if (process.env.VUE_APP_DECRY === 'true') {
         let data = response.data
         data = JSON.parse(Crypto.decrypt(data))
+        // console.log(data);
         response.data = data
     }
     return response
@@ -86,7 +87,6 @@ service.interceptors.request.use(
         return config
     },
     (error) => {
-        Toast.fail('网络开小差了哦...');
         Promise.reject(error)
     }
 )
@@ -95,23 +95,22 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     (response) => {
         response = handleResponseData(response);
-        const data = response.data
-        const { code } = data
+        const { code, msg } = response.data
         if (typeof code === 'undefined') {
-            return data
+            return response;
         } else {
             switch (code) {
                 case STATUS_CODE.SUCCESS:
-                    return data;
+                    if ((msg as string).length > 0) {
+                        Toast.success(msg)
+                    }
+                    return response.data;
                 default:
-                    handleError(data)
-                    break;
+                    return handleError(response)
             }
         }
     },
     (error) => {
-        console.log(error.response.status);
-
         if (error && error.response) {
             switch (error.response.status) {
                 case 400:
@@ -157,13 +156,3 @@ service.interceptors.response.use(
 )
 
 export default service
-
-
-
-
-
-
-
-
-
-

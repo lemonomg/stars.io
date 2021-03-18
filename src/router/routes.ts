@@ -1,4 +1,5 @@
 import Login from '@/views/auth/login.vue';
+import Register from '@/views/auth/register.vue'
 import Home from '@/views/home/home.vue';
 import My from '@/views/my/my.vue'
 import Layout from "@/views/layout/index.vue";
@@ -9,6 +10,11 @@ const routes: RouteConfig[] = [
         path: '/login',
         component: Login,
         meta: { title: '登录' }
+    },
+    {
+        path: '/register',
+        component: Register,
+        meta: { title: '注册' }
     },
     {
 

@@ -1,0 +1,17 @@
+.account {
+    height: 100%;
+    background-color: #f4f4f4;
+    .account-link {
+      text-align: right;
+      font-size: 15px;
+      a {
+        color: #1989fa;
+      }
+    }
+  }
+  .account-form {
+    // margin-top: 15px;
+    .van-button--info:first-child {
+      margin-bottom: 1em;
+    }
+  }

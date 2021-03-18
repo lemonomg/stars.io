@@ -1,10 +1,11 @@
 // 处理错误
-import { AxiosResponse } from 'axios'
 import { STATUS_CODE } from "@/api";
 import { removeToken } from '@/utils/auth'
+import { AxiosResponse } from "axios";
 import { Toast } from 'vant'
 
 export const errorLog = (err: Error) => {
+    err.message = "网络开小差了"
     Toast.fail(err.message)
     throw new Error(err.message)
 }
@@ -13,20 +14,21 @@ function errorCreat(msg: string) {
     errorLog(err)
 }
 export const handleError = (response: AxiosResponse) => {
-    const res = response.data
-    const { code } = res //获取后端返回的 code
+    const { code, msg } = response.data //获取后端返回的 code
     // 根据这个code来判断
     switch (code) {
         // Token 过期
         case STATUS_CODE.TOKEN_OVERDUE:
-            Toast.fail(res.msg)
+            Toast.fail(msg)
             removeToken()
             break;
         case STATUS_CODE.ERROR:
-            Toast.fail(res.msg)
-            break;
+            if (msg !== "") {
+                Toast.fail(msg)
+            }
+            return response.data
         default:
-            errorCreat(res.msg)
+            errorCreat(msg)
             break;
     }
 

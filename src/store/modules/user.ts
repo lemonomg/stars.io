@@ -32,11 +32,19 @@ const actions: ActionTree<any, any> = {
     // 登录
     async login({ commit }, userInfo: object) {
         return new Promise((resolve, reject) => {
-            http.Post(UserAction.LOGIN, userInfo).then((res: UserReponse) => {
-                setToken(res.token)
-                commit('SET_TOKEN', res.token)
-                commit('SET_USER_INFO', res.userInfo)
-                resolve(res)
+            http.Post(UserAction.LOGIN, userInfo).then((res: any) => {
+                console.log(res);
+                if (res.code == "0000") {
+                    res = res.data;
+                    if (res.token && res.userInfo) {
+                        setToken(res.token)
+                        commit('SET_TOKEN', res.token)
+                        commit('SET_USER_INFO', res.userInfo)
+                        resolve(res)
+                    } else {
+                        reject('登录失败')
+                    }
+                }
             }).catch((error: any) => {
                 reject(error)
             })

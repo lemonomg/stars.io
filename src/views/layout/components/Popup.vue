@@ -40,7 +40,7 @@ export default class Popups extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .app-popup {
   display: flex;
   justify-content: center;
@@ -48,6 +48,7 @@ export default class Popups extends Vue {
   .add-row {
     width: 100%;
     .van-col {
+      text-align: center;
       img {
         width: 55px;
         height: 55px;

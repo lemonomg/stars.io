@@ -27,13 +27,13 @@
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import { Button, Field, Form, Toast, Divider } from "vant";
+import { Button, Field, Form, Toast } from "vant";
 import { namespace } from "vuex-class";
+import { reg } from "@/utils/reg";
 import NavBar from "./NavBar.vue";
 Vue.use(Button);
 Vue.use(Form);
 Vue.use(Field);
-Vue.use(Divider);
 const UserModule = namespace("user");
 interface LoginForm {
   account: string;
@@ -70,11 +70,11 @@ export default class Login extends Vue {
   private checkLogin(): boolean {
     const account = this.loginForm.account as string;
     const password = this.loginForm.password as string;
-    if (account.trim().length < 1) {
-      Toast.fail("请输入用户名");
+    if (!reg.account.test(account)) {
+      Toast.fail("请输入正确的用户名");
       return false;
-    } else if (password.trim().length < 6) {
-      Toast.fail("密码不能小于6位");
+    } else if (!reg.password.test(password)) {
+      Toast.fail("请输入正确的密码");
       return false;
     } else {
       return true;

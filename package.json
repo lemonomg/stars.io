@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve --mode dev",
+    "serve": "vue-cli-service serve --mode production",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -57,6 +58,9 @@
     },
     "rules": {
       "@typescript-eslint/no-explicit-any": [
+        "off"
+      ],
+      "@typescript-eslint/no-this-alias": [
         "off"
       ]
     }

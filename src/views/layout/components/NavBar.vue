@@ -3,6 +3,7 @@
     :title="$route.meta.title"
     :left-text="leftText"
     @click-left="onClickLeft"
+    fixed
     class="main-navbar"
   />
 </template>
@@ -27,10 +28,4 @@ export default class NavBars extends Vue {
 </script>
 
 <style>
-.main-navbar {
-  position: fixed;
-  left: 0px;
-  right: 0px;
-  top: 0;
-}
 </style>

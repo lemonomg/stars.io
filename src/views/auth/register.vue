@@ -8,6 +8,12 @@
         placeholder="4-10位 数字与字母的组合"
       />
       <van-field
+        type="text"
+        label="昵称"
+        placeholder="请输入昵称"
+        v-model="registerForm.nickname"
+      />
+      <van-field
         label="密码"
         v-model="registerForm.password"
         type="password"
@@ -25,21 +31,23 @@
         placeholder="请输入邮箱"
       ></van-field>
       <van-field
+        v-model="registerForm.emailCode"
         center
         clearable
-        label="邮箱验证码"
-        placeholder="请输入邮箱验证码"
+        label="短信验证码"
+        placeholder="请输入短信验证码"
+        use-button-slot
       >
-        <template #button>
-          <van-button
-            size="small"
-            :disabled="!btnDisabled"
-            plain
-            @click="sendEmailCode()"
-            type="info"
-            >{{ codeText }}</van-button
-          >
-        </template>
+        <van-button
+          slot="button"
+          @click="sendEmailCode()"
+          :disabled="!btnDisabled"
+          plain
+          size="small"
+          type="info"
+        >
+          {{ codeText }}
+        </van-button>
       </van-field>
       <div style="margin: 16px">
         <van-button
@@ -66,6 +74,7 @@ import Http from "@/http";
 import NavBar from "./NavBar.vue";
 interface RegisterForm {
   account: string;
+  nickname: string;
   password: string;
   passwordOK: string;
   email: string;
@@ -75,13 +84,14 @@ interface RegisterForm {
 @Component({ components: { NavBar } })
 export default class Register extends Vue {
   private registerForm: RegisterForm = {
-    account: "",
-    password: "",
-    passwordOK: "",
-    email: "",
+    account: "lemon1234",
+    nickname: "lemon123",
+    password: "lemon123",
+    passwordOK: "lemon123",
+    email: "myx0930@163.com",
     emailCode: "",
   };
-  private TIMER_TIME = 60;
+  private TIMER_TIME = 120;
   private times = this.TIMER_TIME;
   private timer: any = null;
   private http: Http = new Http();
@@ -92,9 +102,17 @@ export default class Register extends Vue {
       ? "获取验证码"
       : `${this.times}S后重试`;
   }
+
   async handleRegister() {
     // 如果发送验证码成功则进行注册
-    if (await this.sendEmailCode()) {
+    if (this.checkRegisterForm()) {
+      const res = await this.http.Post(UserAction.REGISTER, this.registerForm);
+      if (res.data === "ok") {
+        Toast.success(`注册成功 将跳转到登录页`);
+        setTimeout(() => {
+          this.$router.push({ path: "/login" });
+        }, 2000);
+      }
     }
   }
 
@@ -107,7 +125,6 @@ export default class Register extends Vue {
       );
       if (res.data) {
         this.startTimer();
-        Toast("验证码已发送至您的邮箱");
         this.btnDisabled = false;
         return true;
       }
@@ -128,6 +145,7 @@ export default class Register extends Vue {
       if (that.times <= 0) {
         clearTimeout(that.timer);
         that.times = that.TIMER_TIME;
+        that.btnDisabled = true;
       } else {
         that.times--;
       }

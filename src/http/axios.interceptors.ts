@@ -79,6 +79,7 @@ axiosRetry(service, {
 // 请求拦截器
 service.interceptors.request.use(
     (config) => {
+        Toast.loading();
         // 在发送请求前做点处理
         if (getToken()) {
             config.headers['Authorization'] = getToken()

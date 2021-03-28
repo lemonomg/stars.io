@@ -4,6 +4,8 @@ import router from './router'
 import store from './store'
 import Component from 'vue-class-component'
 
+import "@/icons"
+
 Vue.config.productionTip = false
 // 注册组件路由钩子
 Component.registerHooks([

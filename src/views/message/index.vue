@@ -1,12 +1,12 @@
 <template>
-  <div class="my"></div>
+  <div class="index"></div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 
 @Component({})
-export default class My extends Vue {}
+export default class Index extends Vue {}
 </script>
 
 <style lang="scss">

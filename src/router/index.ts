@@ -24,6 +24,7 @@ router.beforeEach(async (to, from, next) => {
         if (to.path === "/my") {
             Toast.fail('请先去登录哦')
         }
+        next({ params: { isSgin: 'false' } })
         next()
     }
 

@@ -54,10 +54,7 @@ export default class Login extends Vue {
   /** 登录 */
   private handleLogin() {
     if (this.checkLogin()) {
-      Toast.loading({
-        message: "登录中...",
-        forbidClick: true,
-      });
+      Toast.loading();
       this.login(this.loginForm).then(() => {
         this.$router.push({ path: "/my" });
         Toast.clear();
